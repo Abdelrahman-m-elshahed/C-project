@@ -1,6 +1,6 @@
 #include "Transaction.h"
 
-int dayMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int dayMonth[] = {31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 bool Borrow(struct Book curr_book,const char * Member_ISBN,int days)
 {
@@ -21,12 +21,18 @@ bool Borrow(struct Book curr_book,const char * Member_ISBN,int days)
      sprintf(Borrowed[borrowed_size + 1].borrow_date,"%02d-%02d-%2d",date.tm_mday,dueMonth,date.tm_year + 1900);
 
      int dueDate = date.tm_mday + days;
+    
+    if((date.tm_year + 1900) % 4 == 0)
+        dayMonth[1] = 29;
+    else
+        dayMonth[1] = 28;
      
      if(dueDate > dayMonth[date.tm_mon])
      {
         dueDate -= dayMonth[date.tm_mon];
         dueMonth +=1;
      }
+     
      sprintf(Borrowed[borrowed_size + 1].due_date,"%02d-%02d-%2d",dueDate,dueMonth,date.tm_year + 1900);
      
      Borrowed[borrowed_size + 1].returned = 1;
