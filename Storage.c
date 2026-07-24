@@ -1,4 +1,5 @@
 #include "Storage.h"
+
 FILE* fptr; 
 
 void Load(const char * fileName ,void * data,enum Type tp)
@@ -8,34 +9,37 @@ void Load(const char * fileName ,void * data,enum Type tp)
         return;
     if(tp == LIBRARY)
     {
-        for(int i = 0 ; i < Books_size;++i)
+        for(int i = 0 ; i < Books_capacity;++i)
         {
-            struct Book *BK = (struct Book*) (data + i);
-            fscanf(fptr, "%s  %s  %s  %d  %d",BK->ISBN,BK->title,BK->author,BK->total_copies,BK->available_copies);
+            struct Book *BK = ((struct Book*) data) + i;
+            fscanf(fptr, "%s  %s  %s  %d  %d",BK->ISBN,BK->title,BK->author,&BK->total_copies,&BK->available_copies);
+            ++Books_size;
         }
     }
     else if(tp == MEMBERSHIP)
     {
-        for(int i = 0 ; i < member_size;++i)
+        for(int i = 0 ; i < member_capactiy;++i)
         {
-            struct Member *MB = (struct Member*) (data + i);
-            fscanf(fptr, "%d  %s  %s",MB->memberID,MB->name,MB->phoneNumber);
+            struct Member *MB = ((struct Member*) data) + i;
+            fscanf(fptr, "%d  %s  %s",&MB->memberID,MB->name,MB->phoneNumber);
+            ++member_size;
         }
     }
     
     else if(tp == RECORD)
     {
-        for(int i = 0 ; i < borrowed_size;++i)
+        for(int i = 0 ; i < borrowed_capacity;++i)
         {
-            struct Borrow_Record *BR = (struct Borrow_Record*) (data + i);
-            fscanf(fptr, "%s %d %S %s %B",BR->R_ISBN,BR->R_id,BR->borrow_date,BR->due_date,BR->returned);
+            struct Borrow_Record *BR = ((struct Borrow_Record*) data) + i;
+            fscanf(fptr, "%s %d %d-%d-%d %d-%d-%d %d",BR->R_ISBN,&BR->R_id,&BR->borrow_date.tm_mday,&BR->borrow_date.tm_mon,&BR->borrow_date.tm_year,&BR->due_date.tm_mday,&BR->due_date.tm_mon,&BR->due_date.tm_year,&BR->returned);
+            ++borrowed_size;
         }
     }
     
     fclose(fptr);
 }   
 
-void Save(const char * fileName ,void * data,enum Type tp)
+void Savedata(const char * fileName ,void * data,enum Type tp)
 {
     fptr = fopen(fileName,"a");
         if(fptr == NULL) 
@@ -54,7 +58,7 @@ void Save(const char * fileName ,void * data,enum Type tp)
     else if(tp == RECORD)
     {
         struct Borrow_Record BR = *((struct Borrow_Record*) data);
-        fprintf(fptr, "%s %d %S %s %B\n",BR.R_ISBN,BR.R_id,BR.borrow_date,BR.due_date,BR.returned);
+        fprintf(fptr, "%s %d %d-%d-%d %d-%d-%d %d",BR.R_ISBN,BR.R_id,BR.borrow_date.tm_mday,BR.borrow_date.tm_mon,BR.borrow_date.tm_year,BR.due_date.tm_mday,BR.due_date.tm_mon,BR.due_date.tm_year,BR.returned);
     }
     
     fclose(fptr);

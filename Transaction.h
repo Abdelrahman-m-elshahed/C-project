@@ -1,33 +1,33 @@
 #ifndef Transaction_H
 #define Transaction_H
 
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include "Books.h"
+#include "Member.h"
 #include <time.h>
-
-#include "books.h"
-#include "member.h"
 #include "Storage.h"
 
 #define borrowed_capacity 1000
 
 struct Borrow_Record
 {
-    char * R_ISBN;
+    char R_ISBN[10];
     int R_id; 
-    char borrow_date[11];  // 30\12\2030
-    char due_date[11];
+    struct tm borrow_date;  // 30\12\2030
+    struct tm due_date;
     bool returned; // 1 is borrwed
-}Borrowed[1000];
+}extern Borrowed[borrowed_capacity];
 
-int borrowed_size = -1;
+extern int borrowed_size;
 
-bool Borrow(struct Book curr_book,const char * Member_ISBN,int days);
+bool Borrow(const char* Book_name,int Member_ID,int days);
 
-bool return_book(struct Book curr_book);
+int return_book(const char* Book_Title);
 
-int overdue_checks(const * R_ISBN);
+int overdue_checks(int index);
 
-int search(const * R_ISBN);
+int TransactionSearch(const char* R_ISBN);
 
 #endif 

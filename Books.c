@@ -1,6 +1,9 @@
 #include "Books.h"
-    
-bool check()
+
+struct Book books[Books_capacity];
+int Books_size = -1;
+
+bool Bookcheck()
 {
     if(Books_size == -1)
         return 0;
@@ -9,21 +12,24 @@ bool check()
 
 bool add(struct Book new_book)
 {   
-    if(Books_size  > Books_capacity)
+    if(Books_size  == Books_capacity -1)
         return 0;
     
     books[Books_size + 1] = new_book;
     Books_size++;
-
+    Savedata("Library.txt",books,LIBRARY);
     return 1;
 }
 
-bool remove(struct Book new_book)
+bool removeBook(char* rTitle)
 { 
-    if(!check())
+    if(!Bookcheck())
         return 0;
     
-    int index = search(new_book.ISBN);
+    int index = searchBook(rTitle);
+
+    if(index == -1)
+        return 0;
 
     for(int i = index + 1 ; i <= Books_size; ++i)
         books[i - 1] = books[i];
@@ -33,19 +39,20 @@ bool remove(struct Book new_book)
     return 1;
 }
 
-int searchBook(char* sISBN)
+int searchBook(const char* sTitle)
 {
     for(int i = 0 ; i <= Books_size;++i)
     {
-        if(sISBN == books[i].ISBN)
+        if(!strcmp(sTitle,books[i].title))
             return i; // returning the position of the book 
     }
+    return -1;
 } 
 
 void booksList()
 {
     
-    if(!check())
+    if(!Bookcheck())
     {
         printf("There is no Available Books yet!\n");
         return;
