@@ -73,7 +73,7 @@ This project uses only the standard C library headers listed above. There are no
 - Return a book: "transactions operations -> Return a book" and see any overdue fee reported.
 
 ## Credits
-Author: Abdelrahman-m-elshahed
+Author: Abdelrahman Muhammed
 
 ---
 
