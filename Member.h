@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include "Storage.h"
 
-
 #define member_capactiy 300
 
 struct Member
@@ -15,6 +14,7 @@ struct Member
     char phoneNumber[15]; // so u can change it later
 }extern members[member_capactiy];
 
+extern bool ID_taken[member_capactiy];
 extern int member_size;
 
 bool Membercheck();
