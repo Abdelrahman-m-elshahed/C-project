@@ -11,9 +11,9 @@
 #define Books_capacity 1000
 
 struct Book{
-    char ISBN[10];
-    char title[10];
-    char author[10];
+    char ISBN[20];
+    char title[20];
+    char author[20];
     int total_copies;
     int available_copies;  // borrowed copies = total - available
 }extern books[Books_capacity];
