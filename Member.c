@@ -1,6 +1,7 @@
 #include "Member.h"
 
 struct Member members[member_capactiy];
+bool ID_taken[member_capactiy] = {0};
 int member_size = -1;
 
 bool Membercheck()
@@ -17,10 +18,17 @@ bool Registeration(struct Member newMember)
     if(member_size == member_capactiy -1) 
         return 0;
         
+    if(ID_taken[newMember.memberID])
+        return 0;
+
     members[member_size + 1] = newMember;
     member_size++;
     
-    Savedata("Members.txt",members,MEMBERSHIP);
+    ID_taken[newMember.memberID] = 1;
+    
+    #if 0
+    Savedata("Members.txt",&newMember,MEMBERSHIP);
+    #endif
     return 1;
 }
 
@@ -34,14 +42,14 @@ void membersList()
 
     printf("Members\n");
 
-    for(int i = 0;  i < member_size;++i)
+    for(int i = 0;  i <= member_size;++i)
     {
         printf("Member Name: %s",members[i].name);
-        printf("Member Name: %d",members[i].memberID);
-        printf("Member Name: %s",members[i].phoneNumber);
+        printf("Member ID: %d",members[i].memberID);
+        printf("Member Phone number: %s",members[i].phoneNumber);
         printf("\n");
     }
-
+    printf("Total Number of Members is %d\n",member_size + 1);
 }
 void FindMember(int sID)
 {
