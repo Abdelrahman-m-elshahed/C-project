@@ -10,14 +10,33 @@ bool Bookcheck()
     return 1;
 }
 
+bool ISBN_Check(char * ISBN_b_checked)
+{
+    for(int i = 0 ; i <= Books_size;++i)
+    {
+        if(!(strcmp(ISBN_b_checked,books[i].ISBN)))
+            return 0;
+    }
+    
+    return 1;
+}
+
 bool add(struct Book new_book)
 {   
     if(Books_size  == Books_capacity -1)
         return 0;
-    
+    if(!ISBN_Check(new_book.ISBN))
+        return 0;
+
+    if(new_book.total_copies < new_book.available_copies)
+        return 0;
+        
     books[Books_size + 1] = new_book;
     Books_size++;
-    Savedata("Library.txt",books,LIBRARY);
+    #if 0
+    Savedata("Library.txt",&new_book,LIBRARY);
+    #endif
+
     return 1;
 }
 
@@ -62,11 +81,12 @@ void booksList()
 
     for(int i =0 ; i <= Books_size;++i)
     {
-        printf("ISBN %s\n",books[i].ISBN);
-        printf("Title of the Book %s\n",books[i].title);
-        printf("Author Name %s\n",books[i].author);
-        printf("total number of books %d\n",books[i].total_copies);
-        printf("Available books to borrow %d\n",books[i].available_copies);
+        printf("ISBN : %s\n",books[i].ISBN);
+        printf("Title of the Book : %s\n",books[i].title);
+        printf("Author Name : %s\n",books[i].author);
+        printf("total number of books : %d\n",books[i].total_copies);
+        printf("Available books to borrow : %d\n",books[i].available_copies);
         printf("\n");
     }
+    printf("Total number of books %d\n",Books_size+1);
 }
