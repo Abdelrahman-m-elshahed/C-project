@@ -1,4 +1,4 @@
-# Library Management System (C)
+# Library Management System
 
 A console-based Library Management System written in C. It manages books, members, and borrow/return transactions, with simple text-file persistence between runs.
 
