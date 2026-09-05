@@ -38,13 +38,13 @@ A console-based Library Management System written in C. It manages books, member
 Requires a C compiler (GCC recommended). From the project directory:
 
 ```bash
-gcc -o library Main.c Books.c Member.c Storage.c Transaction.c
+gcc Main.c Books.c Member.c Storage.c Transaction.c -o library.exe
 ```
 
 Run the resulting binary:
 
 ```bash
-./library
+./library.exe
 ```
 
 > The project builds cleanly with GCC, aside from one harmless format-specifier warning in `Storage.c` (`%d` used for a `bool*` field when loading transaction records).
